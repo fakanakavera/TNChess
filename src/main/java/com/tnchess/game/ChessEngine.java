@@ -31,30 +31,17 @@ public class ChessEngine {
 	public boolean isLegalMove(int fromFile, int fromRank, int toFile, int toRank) {
 		Square from = squareOf(fromFile, fromRank);
 		Square to = squareOf(toFile, toRank);
-		Move move = new Move(from, to);
-		List<Move> legal;
-		try {
-			legal = MoveGenerator.generateLegalMoves(board);
-		} catch (Exception e) {
-			return false;
-		}
-		return legal.contains(move);
+		return findMatchingMove(from, to) != null;
 	}
 
 	public boolean makeMove(int fromFile, int fromRank, int toFile, int toRank) {
 		Square from = squareOf(fromFile, fromRank);
 		Square to = squareOf(toFile, toRank);
-		Move move = new Move(from, to);
-		List<Move> legal;
-		try {
-			legal = MoveGenerator.generateLegalMoves(board);
-		} catch (Exception e) {
+		Move chosen = findMatchingMove(from, to);
+		if (chosen == null) {
 			return false;
 		}
-		if (!legal.contains(move)) {
-			return false;
-		}
-		board.doMove(move);
+		board.doMove(chosen);
 		return true;
 	}
 
@@ -84,6 +71,33 @@ public class ChessEngine {
 		char fileChar = (char) ('A' + file);
 		String name = ("" + fileChar) + chessRank;
 		return Square.fromValue(name);
+	}
+
+	private Move findMatchingMove(Square from, Square to) {
+		List<Move> legal;
+		try {
+			legal = MoveGenerator.generateLegalMoves(board);
+		} catch (Exception e) {
+			return null;
+		}
+		Move fallback = null;
+		for (Move mv : legal) {
+			if (mv.getFrom().equals(from) && mv.getTo().equals(to)) {
+				// Prefer queen promotion when multiple promotion choices exist
+				try {
+					// getPromotion may be null or Piece.NONE when not a promotion
+					var promo = mv.getPromotion();
+					if (promo != null && (promo == Piece.WHITE_QUEEN || promo == Piece.BLACK_QUEEN)) {
+						return mv;
+					}
+				} catch (Throwable ignore) {
+					// If the library version lacks getPromotion(), just pick the first match
+					return mv;
+				}
+				if (fallback == null) fallback = mv;
+			}
+		}
+		return fallback;
 	}
 }
 
