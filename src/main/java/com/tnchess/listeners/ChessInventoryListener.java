@@ -34,8 +34,15 @@ public class ChessInventoryListener implements Listener {
 		if (raw < topSize) {
 			int file = raw % 9;
 			int rank = raw / 9;
-			// quit column
+			// quit column or promotion selector
 			if (file == 8) {
+				if (game.isPromotionPending()) {
+					// Rows 1..4 carry promotion options
+					if (rank >= 1 && rank <= 4) {
+						game.handlePromotionClick(rank);
+					}
+					return;
+				}
 				plugin.getGameManager().endGame(player);
 				return;
 			}

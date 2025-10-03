@@ -14,7 +14,7 @@ public class TNChessPlugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		getLogger().info("TNChess enabled");
-		this.gameManager = new GameManager();
+		this.gameManager = new GameManager(this);
 		getCommand("chess").setExecutor(new ChessTestCommand(this));
 		getServer().getPluginManager().registerEvents(new ChessInventoryListener(this), this);
 		getServer().getPluginManager().registerEvents(new ChessCloseListener(this), this);

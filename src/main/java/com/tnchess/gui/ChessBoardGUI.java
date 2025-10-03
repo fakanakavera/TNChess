@@ -18,6 +18,7 @@ public class ChessBoardGUI {
 	private final Inventory inventory;
 	private final InventorySnapshot snapshot;
 	private final ChessEngine engine;
+    private boolean showingPromotion;
 
 	public ChessBoardGUI(Player player, ChessEngine engine) {
 		this.player = player;
@@ -61,6 +62,20 @@ public class ChessBoardGUI {
 				}
 			}
 		}
+	}
+
+	public void showPromotionChoices(com.github.bhlangonijr.chesslib.Side sideToMove) {
+		showingPromotion = true;
+		// Fill quit column rows 1..4 with Q, R, B, N for current side
+		inventory.setItem(1 * 9 + 8, sideToMove == com.github.bhlangonijr.chesslib.Side.WHITE ? Items.whiteQueen() : Items.blackQueen());
+		inventory.setItem(2 * 9 + 8, sideToMove == com.github.bhlangonijr.chesslib.Side.WHITE ? Items.whiteRook() : Items.blackRook());
+		inventory.setItem(3 * 9 + 8, sideToMove == com.github.bhlangonijr.chesslib.Side.WHITE ? Items.whiteBishop() : Items.blackBishop());
+		inventory.setItem(4 * 9 + 8, sideToMove == com.github.bhlangonijr.chesslib.Side.WHITE ? Items.whiteKnight() : Items.blackKnight());
+	}
+
+	public void clearPromotionChoices() {
+		showingPromotion = false;
+		paintQuitColumn();
 	}
 
 	private ItemStack pieceItemAt(int file, int rank) {

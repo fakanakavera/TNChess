@@ -45,6 +45,70 @@ public class ChessEngine {
 		return true;
 	}
 
+    public java.util.List<Piece> getPromotionOptions(int fromFile, int fromRank, int toFile, int toRank) {
+        Square from = squareOf(fromFile, fromRank);
+        Square to = squareOf(toFile, toRank);
+        java.util.List<Move> legal;
+        try {
+            legal = MoveGenerator.generateLegalMoves(board);
+        } catch (Exception e) {
+            return java.util.List.of();
+        }
+        java.util.Set<Piece> pieces = new java.util.LinkedHashSet<>();
+        for (Move mv : legal) {
+            if (mv.getFrom().equals(from) && mv.getTo().equals(to)) {
+                try {
+                    Piece promo = mv.getPromotion();
+                    if (promo != null && promo != Piece.NONE) {
+                        pieces.add(promo);
+                    }
+                } catch (Throwable ignore) {
+                    // Library without promotion getter; no options then
+                }
+            }
+        }
+        return new java.util.ArrayList<>(pieces);
+    }
+
+    public boolean makePromotion(int fromFile, int fromRank, int toFile, int toRank, Piece promotionPiece) {
+        Square from = squareOf(fromFile, fromRank);
+        Square to = squareOf(toFile, toRank);
+        java.util.List<Move> legal;
+        try {
+            legal = MoveGenerator.generateLegalMoves(board);
+        } catch (Exception e) {
+            return false;
+        }
+        for (Move mv : legal) {
+            if (mv.getFrom().equals(from) && mv.getTo().equals(to)) {
+                try {
+                    Piece promo = mv.getPromotion();
+                    if (promo != null && promo.equals(promotionPiece)) {
+                        board.doMove(mv);
+                        return true;
+                    }
+                } catch (Throwable ignore) {
+                    // If getPromotion is unavailable, fall back to normal move (shouldn't happen here)
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isMated() {
+        try {
+            return board.isMated();
+        } catch (Throwable t) {
+            // Fallback: no legal moves and in check is treated as mated.
+            java.util.List<Move> legal;
+            try { legal = MoveGenerator.generateLegalMoves(board); } catch (Exception e) { return false; }
+            if (!legal.isEmpty()) return false;
+            try { return board.isKingAttacked(); } catch (Throwable t2) { return false; }
+        }
+    }
+
+    // getSideToMove is already defined above
+
 	public Set<long[]> getLegalDestinations(int fromFile, int fromRank) {
 		Square from = squareOf(fromFile, fromRank);
 		List<Move> legal;
