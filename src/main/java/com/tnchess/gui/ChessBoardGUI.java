@@ -25,6 +25,7 @@ public class ChessBoardGUI {
 		this.snapshot = InventorySnapshot.snapshotRows(player);
 		this.inventory = Bukkit.createInventory(new ChessBoardHolder(), 54, "TNChess");
 		paintQuitColumn();
+		paintBottomFiller();
 		repaintAll();
 	}
 
@@ -41,6 +42,12 @@ public class ChessBoardGUI {
 		for (int row = 0; row < 6; row++) {
 			inventory.setItem(row * 9 + 8, quit);
 		}
+	}
+
+	private void paintBottomFiller() {
+		ItemStack filler = Items.disabledSlot();
+		player.getInventory().setItem(17, filler);
+		player.getInventory().setItem(26, filler);
 	}
 
 	public void repaintAll() {

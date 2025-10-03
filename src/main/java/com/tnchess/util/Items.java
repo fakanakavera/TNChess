@@ -29,6 +29,10 @@ public final class Items {
 		return named(Material.BARRIER, ChatColor.RED + "Quit Game");
 	}
 
+    public static ItemStack disabledSlot() {
+        return named(Material.GRAY_STAINED_GLASS_PANE, ChatColor.DARK_GRAY + "");
+    }
+
 	private static ItemStack named(Material material, String name) {
 		ItemStack stack = new ItemStack(material);
 		ItemMeta meta = stack.getItemMeta();
