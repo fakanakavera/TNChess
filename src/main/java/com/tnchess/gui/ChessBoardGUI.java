@@ -58,18 +58,18 @@ public class ChessBoardGUI {
 
 	private ItemStack pieceItemAt(int file, int rank) {
 		switch (engine.getPieceAt(file, rank)) {
-			case WHITE_KING: return Items.whitePiece("♔ White King");
-			case WHITE_QUEEN: return Items.whitePiece("♕ White Queen");
-			case WHITE_ROOK: return Items.whitePiece("♖ White Rook");
-			case WHITE_BISHOP: return Items.whitePiece("♗ White Bishop");
-			case WHITE_KNIGHT: return Items.whitePiece("♘ White Knight");
-			case WHITE_PAWN: return Items.whitePiece("♙ White Pawn");
-			case BLACK_KING: return Items.blackPiece("♚ Black King");
-			case BLACK_QUEEN: return Items.blackPiece("♛ Black Queen");
-			case BLACK_ROOK: return Items.blackPiece("♜ Black Rook");
-			case BLACK_BISHOP: return Items.blackPiece("♝ Black Bishop");
-			case BLACK_KNIGHT: return Items.blackPiece("♞ Black Knight");
-			case BLACK_PAWN: return Items.blackPiece("♟ Black Pawn");
+			case WHITE_KING: return Items.whiteKing();
+			case WHITE_QUEEN: return Items.whiteQueen();
+			case WHITE_ROOK: return Items.whiteRook();
+			case WHITE_BISHOP: return Items.whiteBishop();
+			case WHITE_KNIGHT: return Items.whiteKnight();
+			case WHITE_PAWN: return Items.whitePawn();
+			case BLACK_KING: return Items.blackKing();
+			case BLACK_QUEEN: return Items.blackQueen();
+			case BLACK_ROOK: return Items.blackRook();
+			case BLACK_BISHOP: return Items.blackBishop();
+			case BLACK_KNIGHT: return Items.blackKnight();
+			case BLACK_PAWN: return Items.blackPawn();
 			default: return new ItemStack(Material.AIR);
 		}
 	}
