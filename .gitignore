@@ -1,0 +1,44 @@
+﻿# Java / Maven / IntelliJ / Eclipse
+
+# Logs
+*.log
+hs_err_pid*
+
+# Build
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle (just in case)
+.gradle/
+build/
+
+# IntelliJ run configs
+out/
+
+# VS Code
+.vscode/
+
+# Local env
+.env
+

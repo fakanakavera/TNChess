@@ -1,0 +1,90 @@
+package com.tnchess.game;
+
+import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.Square;
+import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveGenerator;
+import com.github.bhlangonijr.chesslib.Piece;
+import com.github.bhlangonijr.chesslib.Side;
+
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+public class ChessEngine {
+
+	private final Board board;
+
+	public ChessEngine() {
+		this.board = new Board(); // starts at initial position
+	}
+
+	public Side getSideToMove() {
+		return board.getSideToMove();
+	}
+
+	public Piece getPieceAt(int file, int rank) {
+		Square sq = squareOf(file, rank);
+		return board.getPiece(sq);
+	}
+
+	public boolean isLegalMove(int fromFile, int fromRank, int toFile, int toRank) {
+		Square from = squareOf(fromFile, fromRank);
+		Square to = squareOf(toFile, toRank);
+		Move move = new Move(from, to);
+		List<Move> legal;
+		try {
+			legal = MoveGenerator.generateLegalMoves(board);
+		} catch (Exception e) {
+			return false;
+		}
+		return legal.contains(move);
+	}
+
+	public boolean makeMove(int fromFile, int fromRank, int toFile, int toRank) {
+		Square from = squareOf(fromFile, fromRank);
+		Square to = squareOf(toFile, toRank);
+		Move move = new Move(from, to);
+		List<Move> legal;
+		try {
+			legal = MoveGenerator.generateLegalMoves(board);
+		} catch (Exception e) {
+			return false;
+		}
+		if (!legal.contains(move)) {
+			return false;
+		}
+		board.doMove(move);
+		return true;
+	}
+
+	public Set<long[]> getLegalDestinations(int fromFile, int fromRank) {
+		Square from = squareOf(fromFile, fromRank);
+		List<Move> legal;
+		try {
+			legal = MoveGenerator.generateLegalMoves(board);
+		} catch (Exception e) {
+			return Set.of();
+		}
+		Set<long[]> result = new HashSet<>();
+		for (Move mv : legal) {
+			if (mv.getFrom().equals(from)) {
+				Square to = mv.getTo();
+				int file = to.getFile().ordinal();
+				int rank = to.getRank().ordinal();
+				result.add(new long[] { file, rank });
+			}
+		}
+		return result;
+	}
+
+	private static Square squareOf(int file, int rank) {
+		// file 0..7 -> A..H, rank 0..7 -> 8..1 (top to bottom)
+		int chessRank = 8 - rank; // gui 0 -> rank 8
+		char fileChar = (char) ('A' + file);
+		String name = ("" + fileChar) + chessRank;
+		return Square.fromValue(name);
+	}
+}
+
+
