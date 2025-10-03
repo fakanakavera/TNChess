@@ -79,8 +79,8 @@ public class ChessEngine {
 	}
 
 	private static Square squareOf(int file, int rank) {
-		// file 0..7 -> A..H, rank 0..7 -> 8..1 (top to bottom)
-		int chessRank = 8 - rank; // gui 0 -> rank 8
+		// file 0..7 -> A..H, rank 0..7 -> 1..8 (top to bottom)
+		int chessRank = rank + 1; // gui 0 -> rank 1 (white at top)
 		char fileChar = (char) ('A' + file);
 		String name = ("" + fileChar) + chessRank;
 		return Square.fromValue(name);
