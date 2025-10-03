@@ -16,8 +16,8 @@ public final class InventorySnapshot {
 		PlayerInventory inv = player.getInventory();
 		ItemStack[] saved = new ItemStack[16];
 		for (int i = 0; i < 8; i++) {
-			saved[i] = inv.getItem(18 + i); // top of player inv
-			saved[8 + i] = inv.getItem(27 + i); // bottom row of player inv
+			saved[i] = inv.getItem(9 + i);  // row 1 of main inventory (top of main)
+			saved[8 + i] = inv.getItem(18 + i); // row 2 of main inventory
 		}
 		return new InventorySnapshot(saved);
 	}
@@ -25,8 +25,8 @@ public final class InventorySnapshot {
 	public void restore(Player player) {
 		PlayerInventory inv = player.getInventory();
 		for (int i = 0; i < 8; i++) {
-			inv.setItem(18 + i, saved[i]);
-			inv.setItem(27 + i, saved[8 + i]);
+			inv.setItem(9 + i, saved[i]);
+			inv.setItem(18 + i, saved[8 + i]);
 		}
 	}
 }
