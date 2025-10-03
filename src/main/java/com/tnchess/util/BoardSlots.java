@@ -13,7 +13,9 @@ public final class BoardSlots {
 	}
 
 	public static int toPlayerInventorySlot(int guiRank, int guiFile) {
-		return (guiRank == 6 ? 27 : 18) + guiFile; // guiRank 6->27..34, 7->18..25
+		// Place pawns (rank 6) on the top of player inventory (18..25),
+		// and the back rank (rank 7) on the bottom row (27..34)
+		return (guiRank == 6 ? 18 : 27) + guiFile; // guiRank 6->18..25, 7->27..34
 	}
 }
 

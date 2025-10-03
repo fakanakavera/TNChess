@@ -48,13 +48,14 @@ public class ChessInventoryListener implements Listener {
 		// bottom inventory clicks
 		if (e.getClickedInventory() instanceof PlayerInventory) {
 			int slot = e.getSlot(); // slot within player inventory 0..35
-			if (slot >= 27 && slot <= 34) {
-				int file = slot - 27;
+			// Top of player inventory is slots 18..25 (rank 6 pawns)
+			if (slot >= 18 && slot <= 25) {
+				int file = slot - 18;
 				int rank = 6;
 				game.handleBoardClick(file, rank);
-			} else if (slot >= 18 && slot <= 25) {
-				int file = slot - 18;
-				int rank = 7;
+			} else if (slot >= 27 && slot <= 34) {
+				int file = slot - 27;
+				int rank = 7; // bottom row is the back rank
 				game.handleBoardClick(file, rank);
 			}
 		}
