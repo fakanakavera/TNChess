@@ -14,6 +14,7 @@ public class ChessGame {
 	private final ChessBoardGUI gui;
 	private Player guest;
 	private ChessBoardGUI guestGui;
+	private java.util.UUID lobbyId;
 
     private int selectedFile = -1;
     private int selectedRank = -1;
@@ -21,12 +22,15 @@ public class ChessGame {
     private boolean promotionPending = false;
     private int promFromFile, promFromRank, promToFile, promToRank;
 
-    public ChessGame(TNChessPlugin plugin, Player player) {
+	public ChessGame(TNChessPlugin plugin, Player player) {
         this.player = player;
         this.plugin = plugin;
         this.engine = new ChessEngine();
         this.gui = new ChessBoardGUI(player, engine);
     }
+
+	public void setLobbyId(java.util.UUID lobbyId) { this.lobbyId = lobbyId; }
+	public java.util.UUID getLobbyId() { return lobbyId; }
 
 	public void open() {
 		gui.open();

@@ -35,6 +35,7 @@ public class GameManager {
             existing.close();
         }
         ChessGame game = new ChessGame(plugin, host);
+        game.setLobbyId(lobby.getId());
         gamesByLobby.put(lobby.getId(), game);
         activeGames.put(host.getUniqueId(), game);
         game.open();
@@ -71,7 +72,14 @@ public class GameManager {
         // Remove any player mappings pointing to this game
         activeGames.entrySet().removeIf(e -> e.getValue() == game);
         // Remove lobby mapping if present
-        gamesByLobby.entrySet().removeIf(e -> e.getValue() == game);
+        gamesByLobby.entrySet().removeIf(e -> {
+            boolean match = e.getValue() == game;
+            if (match) {
+                // also delete lobby so it disappears from list
+                plugin.getLobbyManager().removeLobby(e.getKey());
+            }
+            return match;
+        });
     }
 }
 

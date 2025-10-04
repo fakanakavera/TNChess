@@ -34,7 +34,7 @@ public class LobbyInventoryListener implements Listener {
 		GameManager gm = plugin.getGameManager();
 
 		int slot = e.getRawSlot();
-		if (slot == 49) {
+        if (slot == 49) {
 			// create lobby
 			Lobby lobby = lm.createLobby(player.getUniqueId(), player.getName() + "'s lobby");
 			player.sendMessage("Lobby created. Waiting for player...");
@@ -46,7 +46,7 @@ public class LobbyInventoryListener implements Listener {
 		List<Lobby> open = lm.listOpenLobbies();
 		if (slot >= 0 && slot < open.size()) {
 			Lobby chosen = open.get(slot);
-			if (chosen.join(player.getUniqueId())) {
+            if (chosen.join(player.getUniqueId())) {
 				player.sendMessage("Joined lobby. Starting game...");
 				gm.startGuest(player, chosen);
 			} else {
