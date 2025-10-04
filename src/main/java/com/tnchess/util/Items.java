@@ -33,6 +33,10 @@ public final class Items {
         return named(Material.GRAY_STAINED_GLASS_PANE, ChatColor.DARK_GRAY + "");
     }
 
+	public static ItemStack simple(Material material, String name) {
+		return named(material, name);
+	}
+
 	private static ItemStack named(Material material, String name) {
 		ItemStack stack = new ItemStack(material);
 		ItemMeta meta = stack.getItemMeta();

@@ -12,6 +12,8 @@ public class ChessGame {
     private final TNChessPlugin plugin;
 	private final ChessEngine engine;
 	private final ChessBoardGUI gui;
+	private Player guest;
+	private ChessBoardGUI guestGui;
 
     private int selectedFile = -1;
     private int selectedRank = -1;
@@ -28,9 +30,14 @@ public class ChessGame {
 
 	public void open() {
 		gui.open();
+		player.sendTitle("Waiting for player", "", 10, 80, 10);
 	}
 
 	public void close() {
+		if (guestGui != null) {
+			guestGui.restore();
+			if (guest != null) guest.closeInventory();
+		}
 		gui.restore();
 		player.closeInventory();
 	}
@@ -65,6 +72,13 @@ public class ChessGame {
 		clearSelection();
 	}
 
+    // Overload that enforces turn by player (host = white, guest = black)
+    public void handleBoardClick(Player who, int file, int rank) {
+        if (promotionPending) return;
+        if (!isPlayersTurn(who)) return;
+        handleBoardClick(file, rank);
+    }
+
     public boolean isPromotionPending() {
         return promotionPending;
     }
@@ -90,6 +104,12 @@ public class ChessGame {
         }
     }
 
+    // Overload that enforces turn for promotion selection
+    public void handlePromotionClick(Player who, int guiRank) {
+        if (!isPlayersTurn(who)) return;
+        handlePromotionClick(guiRank);
+    }
+
     private void beginPromotion(int fromFile, int fromRank, int toFile, int toRank) {
         this.promotionPending = true;
         this.promFromFile = fromFile;
@@ -101,6 +121,7 @@ public class ChessGame {
 
 	private void guiRepaint() {
 		gui.repaintAll();
+		if (guestGui != null) guestGui.repaintAll();
 	}
 
 	private boolean noSelection() {
@@ -121,8 +142,25 @@ public class ChessGame {
             Side toMove = engine.getSideToMove();
             String winner = (toMove == Side.WHITE ? "Black" : "White");
             player.sendMessage("Checkmate! " + winner + " wins.");
-            plugin.getGameManager().endGame(player);
+            if (guest != null) guest.sendMessage("Checkmate! " + winner + " wins.");
+            plugin.getGameManager().endGame(this);
         }
+    }
+
+    public void attachGuest(Player guest) {
+        this.guest = guest;
+        this.guestGui = new ChessBoardGUI(guest, engine);
+        this.guestGui.open();
+        player.sendTitle("Game started", "You are White", 10, 40, 10);
+        guest.sendTitle("Game started", "You are Black", 10, 40, 10);
+    }
+
+    private boolean isPlayersTurn(Player who) {
+        Side side = engine.getSideToMove();
+        if (side == Side.WHITE) {
+            return who.getUniqueId().equals(player.getUniqueId());
+        }
+        return guest != null && who.getUniqueId().equals(guest.getUniqueId());
     }
 }
 

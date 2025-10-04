@@ -39,7 +39,7 @@ public class ChessInventoryListener implements Listener {
 				if (game.isPromotionPending()) {
 					// Rows 1..4 carry promotion options
 					if (rank >= 1 && rank <= 4) {
-						game.handlePromotionClick(rank);
+						game.handlePromotionClick(player, rank);
 					}
 					return;
 				}
@@ -47,7 +47,7 @@ public class ChessInventoryListener implements Listener {
 				return;
 			}
 			if (file >= 0 && file <= 7 && rank >= 0 && rank <= 5) {
-				game.handleBoardClick(file, rank);
+				game.handleBoardClick(player, file, rank);
 			}
 			return;
 		}
@@ -59,11 +59,11 @@ public class ChessInventoryListener implements Listener {
 			if (slot >= 9 && slot <= 16) {
 				int file = slot - 9;   // rank 6 pawns
 				int rank = 6;
-				game.handleBoardClick(file, rank);
+				game.handleBoardClick(player, file, rank);
 			} else if (slot >= 18 && slot <= 25) {
 				int file = slot - 18;  // rank 7 back rank
 				int rank = 7;
-				game.handleBoardClick(file, rank);
+				game.handleBoardClick(player, file, rank);
 			}
 		}
 	}
