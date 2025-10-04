@@ -26,7 +26,7 @@ public class ChessGame {
         this.player = player;
         this.plugin = plugin;
         this.engine = new ChessEngine();
-        this.gui = new ChessBoardGUI(player, engine);
+        this.gui = new ChessBoardGUI(player, engine, true);
     }
 
 	public void setLobbyId(java.util.UUID lobbyId) { this.lobbyId = lobbyId; }
@@ -80,7 +80,8 @@ public class ChessGame {
     public void handleBoardClick(Player who, int file, int rank) {
         if (promotionPending) return;
         if (!isPlayersTurn(who)) return;
-        handleBoardClick(file, rank);
+        int[] fr = toEngineCoords(who, file, rank);
+        handleBoardClick(fr[0], fr[1]);
     }
 
     public boolean isPromotionPending() {
@@ -153,7 +154,7 @@ public class ChessGame {
 
     public void attachGuest(Player guest) {
         this.guest = guest;
-        this.guestGui = new ChessBoardGUI(guest, engine);
+        this.guestGui = new ChessBoardGUI(guest, engine, false);
         this.guestGui.open();
         player.sendTitle("Game started", "You are White", 10, 40, 10);
         guest.sendTitle("Game started", "You are Black", 10, 40, 10);
@@ -165,6 +166,15 @@ public class ChessGame {
             return who.getUniqueId().equals(player.getUniqueId());
         }
         return guest != null && who.getUniqueId().equals(guest.getUniqueId());
+    }
+
+    private int[] toEngineCoords(Player who, int file, int rank) {
+        boolean isHost = who.getUniqueId().equals(player.getUniqueId());
+        if (isHost) {
+            return new int[] { file, 7 - rank };
+        } else {
+            return new int[] { 7 - file, rank };
+        }
     }
 }
 

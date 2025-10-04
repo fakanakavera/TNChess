@@ -18,11 +18,13 @@ public class ChessBoardGUI {
 	private final Inventory inventory;
 	private final InventorySnapshot snapshot;
 	private final ChessEngine engine;
+    private final boolean whiteBottom;
     private boolean showingPromotion;
 
-	public ChessBoardGUI(Player player, ChessEngine engine) {
+	public ChessBoardGUI(Player player, ChessEngine engine, boolean whiteBottom) {
 		this.player = player;
 		this.engine = engine;
+		this.whiteBottom = whiteBottom;
 		this.snapshot = InventorySnapshot.snapshotRows(player);
 		this.inventory = Bukkit.createInventory(new ChessBoardHolder(), 54, "TNChess");
 		paintQuitColumn();
@@ -79,7 +81,9 @@ public class ChessBoardGUI {
 	}
 
 	private ItemStack pieceItemAt(int file, int rank) {
-		switch (engine.getPieceAt(file, rank)) {
+		int eFile = whiteBottom ? file : (7 - file);
+		int eRank = whiteBottom ? (7 - rank) : rank;
+		switch (engine.getPieceAt(eFile, eRank)) {
 			case WHITE_KING: return Items.whiteKing();
 			case WHITE_QUEEN: return Items.whiteQueen();
 			case WHITE_ROOK: return Items.whiteRook();
