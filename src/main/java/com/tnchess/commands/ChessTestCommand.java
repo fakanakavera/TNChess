@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import com.tnchess.TNChessPlugin;
-import com.tnchess.game.GameManager;
 import com.tnchess.gui.LobbyGUI;
 
 public class ChessTestCommand implements CommandExecutor {

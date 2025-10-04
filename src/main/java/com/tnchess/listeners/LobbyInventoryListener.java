@@ -5,14 +5,12 @@ import com.tnchess.TNChessPlugin;
 import com.tnchess.game.Lobby;
 import com.tnchess.game.LobbyManager;
 import com.tnchess.game.GameManager;
-import com.tnchess.game.ChessGame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class LobbyInventoryListener implements Listener {
 			Lobby lobby = lm.createLobby(player.getUniqueId(), player.getName() + "'s lobby");
 			player.sendMessage("Lobby created. Waiting for player...");
 			// Start a game for host in waiting mode
-			ChessGame game = gm.startWaitingGame(player, lobby);
+			gm.startWaitingGame(player, lobby);
 			return;
 		}
 		// Joining lobby by slot index mapping to list order

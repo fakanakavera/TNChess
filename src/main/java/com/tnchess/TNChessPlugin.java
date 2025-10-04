@@ -7,7 +7,6 @@ import com.tnchess.listeners.ChessCloseListener;
 import com.tnchess.listeners.QuitListener;
 import com.tnchess.game.GameManager;
 import com.tnchess.game.LobbyManager;
-import com.tnchess.gui.LobbyGUI;
 import com.tnchess.listeners.LobbyInventoryListener;
 
 public class TNChessPlugin extends JavaPlugin {
